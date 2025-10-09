@@ -1,14 +1,18 @@
 package com.swingingstring.file_scanner.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swingingstring.file_scanner.entity.HistoryItem;
 import com.swingingstring.file_scanner.model.FileItem;
+
+import com.swingingstring.file_scanner.model.HistoryResponse;
 import com.swingingstring.file_scanner.repository.ScanHistoryRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,5 +39,24 @@ public class HistoryService {
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Failed to serialize FileItems to JSON", e);
         }
+    }
+
+    public List<HistoryResponse> getAllHistoryItems() {
+        List<HistoryResponse> allItems = new ArrayList<>();
+
+        for (HistoryItem entity : repository.findAll()) {
+            try {
+                List<FileItem> items = objectMapper.readValue(
+                        entity.getFileItemsJson(),
+                        new TypeReference<List<FileItem>>() {}
+                );
+                HistoryResponse response = new HistoryResponse(entity.getId(), entity.getUser(), entity.getCreatedAt(), items);
+                allItems.add(response);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to deserialize FileItems JSON", e);
+            }
+        }
+
+        return allItems;
     }
 }

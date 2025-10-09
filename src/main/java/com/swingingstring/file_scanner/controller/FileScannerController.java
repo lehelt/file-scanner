@@ -1,6 +1,7 @@
 package com.swingingstring.file_scanner.controller;
 
 import com.swingingstring.file_scanner.model.FileItem;
+import com.swingingstring.file_scanner.model.HistoryResponse;
 import com.swingingstring.file_scanner.service.FileScannerService;
 import com.swingingstring.file_scanner.service.HistoryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,7 +38,7 @@ public class FileScannerController {
     }
 
     @GetMapping("/history")
-    public String getModHistory() {
-        return "Return history";
+    public List<HistoryResponse> getModHistory() {
+        return historyService.getAllHistoryItems();
     }
 }

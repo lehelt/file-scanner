@@ -9,6 +9,8 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 
@@ -26,7 +28,8 @@ public class HistoryItem {
     @Column(nullable = false, name = "username")
     private String user;
 
-    @Column(nullable = false, columnDefinition = "jsonb")
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "file_items_json", columnDefinition = "jsonb")
     private String fileItemsJson;
 
     @Column(nullable = false)
