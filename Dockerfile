@@ -1,13 +1,21 @@
 # --- BUILD STAGE ---
 FROM gradle:8.10.2-jdk21 AS builder
 WORKDIR /app
-COPY . .
+COPY --chown=gradle:gradle . .
 RUN ./gradlew clean bootJar --no-daemon
 
 # --- RUNTIME STAGE ---
 FROM eclipse-temurin:21-jdk-jammy
 WORKDIR /app
-COPY --from=builder /app/build/libs/file-scanner-0.0.1-SNAPSHOT.jar app.jar
 
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Build-time arg for port number
+ARG SERVER_PORT=8080
+# Runtime env variable
+ENV SERVER_PORT=${SERVER_PORT}
+
+COPY --from=builder /app/build/libs/*.jar app.jar
+
+# EXPOSE
+EXPOSE ${SERVER_PORT}
+
+ENTRYPOINT ["java","-jar","/app/app.jar"]

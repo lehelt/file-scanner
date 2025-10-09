@@ -2,12 +2,14 @@ package com.swingingstring.file_scanner.controller;
 
 import com.swingingstring.file_scanner.model.FileItem;
 import com.swingingstring.file_scanner.service.FileScannerService;
+import com.swingingstring.file_scanner.service.HistoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
 import java.util.List;
 
 @RestController
@@ -15,9 +17,11 @@ import java.util.List;
 public class FileScannerController {
 
     private final FileScannerService scannerService;
+    private final HistoryService historyService;
 
-    public FileScannerController(FileScannerService scannerService) {
+    public FileScannerController(FileScannerService scannerService, HistoryService historyService) {
         this.scannerService = scannerService;
+        this.historyService = historyService;
     }
 
     @GetMapping("/")
@@ -28,7 +32,9 @@ public class FileScannerController {
     @GetMapping("/getUnique")
     @Operation(summary = "Recursively list files and directories")
     public List<FileItem> getUniqueListing(@RequestParam String path) {
-        return scannerService.search(path);
+        List<FileItem> items = scannerService.search(path);
+        historyService.save(items);
+        return items;
     }
 
     @GetMapping("/history")
