@@ -8,6 +8,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -30,7 +31,7 @@ public class FileScannerService {
         Set<String> visited = new HashSet<>();
 
         List<FileItem> result = new ArrayList<>();
-        for (File file : root.listFiles()) {
+        for (File file : Objects.requireNonNull(root.listFiles())) {
             FileItem item = mapToFileItem(file, visited);
             if(item != null){
                 result.add(item);
@@ -50,7 +51,7 @@ public class FileScannerService {
         if (file.isDirectory()) {
             List<FileItem> children = new ArrayList<>();
 
-            for (File child : file.listFiles()) {
+            for (File child : Objects.requireNonNull(file.listFiles())) {
                 FileItem childItem = mapToFileItem(child, visited);
                 if (childItem != null) {
                     children.add(childItem);
