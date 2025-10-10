@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@Tag(name = "Scan API", description = "Recursive file search")
+@Tag(name = "Scan API", description = "Recursive file search and search history")
 public class FileScannerController {
 
     private final FileScannerService scannerService;

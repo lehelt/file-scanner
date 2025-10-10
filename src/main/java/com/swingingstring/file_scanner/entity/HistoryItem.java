@@ -35,6 +35,12 @@ public class HistoryItem {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    /**
+     * Convenience constructor used by the service layer; sets {@code createdAt} to now.
+     *
+     * @param user           username associated with the scan
+     * @param fileItemsJson  serialized JSON representation of scanned items
+     */
     public HistoryItem(String user, String fileItemsJson) {
         this.user = user;
         this.fileItemsJson = fileItemsJson;
