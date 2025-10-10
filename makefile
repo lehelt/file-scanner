@@ -1,13 +1,14 @@
 APP_NAME=file-scanner
+GRADLE_CMD = gradlew.bat
+ifeq ($(OS),)
+	GRADLE_CMD = ./gradlew
+endif
 
 build:
-	echo "Building..."
-	podman build -t $(APP_NAME) .
-
+	$(GRADLE_CMD) clean build
 # Build and run via docker-compose.yml
-run:
-	echo "Starting containers..."
-	podman compose up -d --build
+run: build
+	podman compose up --build
 
 # Stop all containers
 stop:
