@@ -30,6 +30,13 @@ public class HistoryService {
         this.objectMapper = objectMapper;
     }
 
+    /**
+     * Persists a new history entry for the current user, serializing the list of {@link FileItem}
+     * into JSON and storing it in the database.
+     *
+     * @param items list of scanned file items to persist
+     * @throws RuntimeException when JSON serialization fails
+     */
     @Transactional
     public void save(List<FileItem> items) {
         try {
@@ -41,6 +48,13 @@ public class HistoryService {
         }
     }
 
+    /**
+     * Retrieves all scan history entries and deserializes the stored JSON payloads
+     * back into {@link FileItem} lists, returning a view model suitable for API responses.
+     *
+     * @return list of history responses containing metadata and the original items
+     * @throws RuntimeException when JSON deserialization fails
+     */
     public List<HistoryResponse> getAllHistoryItems() {
         List<HistoryResponse> allItems = new ArrayList<>();
 

@@ -20,6 +20,16 @@ public class FileScannerService {
         this.properties = properties;
     }
 
+    /**
+     * Recursively scans the provided directory path and returns a hierarchical list of {@link FileItem}.
+     * The scan is de-duplicated by absolute path to prevent cycles and repeated entries.
+     * If a file extension is configured via {@link ScanProperties#getFileExtensionToScan()}, only files
+     * with that extension are included; directories without any matching children are omitted.
+     *
+     * @param path absolute or relative directory path used as the scan root
+     * @return list of file or directory items representing the immediate children under the path
+     * @throws IllegalArgumentException when the provided path does not exist or is not a directory
+     */
     public List<FileItem> search (String path){
 
         File root = new File(path);
@@ -40,6 +50,15 @@ public class FileScannerService {
         return result;
     }
 
+    /**
+     * Maps a {@link File} into a {@link FileItem} and recurses through directory children.
+     * Uses the {@code visited} set to avoid revisiting the same absolute path.
+     * Directories with no matching children are filtered out (returns {@code null}).
+     *
+     * @param file    current file or directory
+     * @param visited set of absolute paths already processed
+     * @return mapped {@link FileItem} or {@code null} when filtered out
+     */
     private FileItem mapToFileItem(File file, Set<String> visited) {
 
         String absolutePath = file.getAbsolutePath();
