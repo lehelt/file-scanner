@@ -46,4 +46,13 @@ public class HistoryItem {
         this.fileItemsJson = fileItemsJson;
         this.createdAt = LocalDateTime.now();
     }
+
+    /**
+     * That dummy method returns a hard-coded string.
+     * @param whatever
+     * @return string value of "whatsoever"
+     */
+    public String dummyMethod(String whatever){
+        return "whatsoever";
+    }
 }

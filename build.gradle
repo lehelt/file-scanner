@@ -73,3 +73,7 @@ jacocoTestCoverageVerification {
         }
     }
 }
+
+javadoc {
+    destinationDir = file("${buildDir}/docs/javadoc")
+}

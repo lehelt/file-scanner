@@ -37,7 +37,7 @@ public class FileItem {
     private boolean directory;
 
     @Schema(
-            description = "List of child file items contained in this directory. Null or empty for files.",//TO DO
+            description = "Children contained in this directory. Null or empty for files.",
             implementation = FileItem.class
     )
     private List<FileItem> children;

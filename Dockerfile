@@ -2,6 +2,8 @@
 FROM gradle:8.10.2-jdk21 AS builder
 WORKDIR /app
 COPY --chown=gradle:gradle . .
+RUN chmod +x ./gradlew
+RUN ls -al
 RUN ./gradlew clean bootJar --no-daemon
 
 # --- RUNTIME STAGE ---
